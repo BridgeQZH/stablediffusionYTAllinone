@@ -8,7 +8,7 @@ from base64 import b64encode
 import torch
 from torch import autocast
 from torch.nn import functional as F
-from diffusers import StableDiffusionPipeline, AutoencoderKL
+from diffusers import AutoencoderKL
 from diffusers import UNet2DConditionModel, PNDMScheduler, LMSDiscreteScheduler
 from diffusers.schedulers.scheduling_ddim import DDIMScheduler
 from transformers import CLIPTextModel, CLIPTokenizer
@@ -112,12 +112,6 @@ def prompt_to_img(prompts, height=512, width=512, num_inference_steps=50,
 
 
 device = 'cuda'
-
-pipe = StableDiffusionPipeline.from_pretrained(
-    'CompVis/stable-diffusion-v1-4', revision='fp16',
-    torch_dtype=torch.float16, use_auth_token=True)
-pipe = pipe.to(device)
-
 
 # 1. Load the autoencoder model which will be used to decode the latents into image space. 
 vae = AutoencoderKL.from_pretrained(
